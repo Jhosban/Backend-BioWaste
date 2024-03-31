@@ -106,21 +106,30 @@ export const adminRegistrer = async (require, response) => {
 export const login = async (require, response) => {
     try {
         const { username, password } = require.body;
+        const adminFound = await Admin.findOne({ username })
         const userFound = await User.findOne({ username });
 
-        if (!userFound)
+        if (!userFound && !adminFound)
             return response.status(400).json({
                 message: ["User not found"],
-            });
+        });
 
-        const isMatch = await bcrypt.compare(password, userFound.password);
+        let user;
+        if (userFound) {
+            user = userFound;
+        }else if (adminFound){
+            user = adminFound;
+        }
+
+    
+        const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return response.status(400).json({
                 message: ["The password is incorrect"],
             });
         }
 
-        const token = await createAccessToken({ id: userFound._id, });
+        const token = await createAccessToken({ id: user._id, });
 
         response.cookie("token", token, {
             httpOnly: process.env.NODE_ENV !== "development",
@@ -129,10 +138,10 @@ export const login = async (require, response) => {
         });
 
         response.json({
-            id: userFound._id,
-            username: userFound.username,
-            email: userFound.email,
-            phoneNumber: userFound.phoneNumber,
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            phoneNumber: user.phoneNumber
         });
     } catch (err) {
         response.status(500).json({ message: err.message });
