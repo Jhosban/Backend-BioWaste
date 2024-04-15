@@ -3,6 +3,7 @@ import Admin from '../models/admin-model.js';
 import Residence from '../models/residence-model.js';
 import bcrypt from 'bcryptjs'
 import { createAccessToken } from '../libs/jwt.js'
+import { Resend } from 'resend';
 
 
 export const registrer = async (require, response) => {
@@ -85,6 +86,15 @@ export const adminRegistrer = async (require, response) => {
             secure: true,
             sameSite: "none",
         });
+
+        const resend = new Resend('re_K4i38cCc_EvUCMRrtaLrV7mmPastDSmMk');
+
+        resend.emails.send({
+            from: 'onboarding@resend.dev',
+            to: adminSaved.email,
+            subject: 'CODIGO DE VERIFICACION',
+            html: '<strong>34512</strong>'
+          });
 
         response.json({
             id: adminSaved._id,
