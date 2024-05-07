@@ -24,7 +24,7 @@ export const registrer = async (require, response) => {
 
         if (!passwordMatch) {
             return response.status(400).json({ 
-                message: 'Password do not match'
+                message: "Password don't match"
             })
         }
 
@@ -86,15 +86,6 @@ export const adminRegistrer = async (require, response) => {
             secure: true,
             sameSite: "none",
         });
-
-        const resend = new Resend('re_K4i38cCc_EvUCMRrtaLrV7mmPastDSmMk');
-
-        resend.emails.send({
-            from: 'onboarding@resend.dev',
-            to: adminSaved.email,
-            subject: 'CODIGO DE VERIFICACION',
-            html: '<strong>34512</strong>'
-          });
 
         response.json({
             id: adminSaved._id,
@@ -205,5 +196,22 @@ export const createResidence = async (require, response) => {
         response.status(500).json({ message: err.message });
     }
 
+};
+
+export const email_send = async (email) => {
+    const resend = new Resend('re_K4i38cCc_EvUCMRrtaLrV7mmPastDSmMk');
+    
+    try {
+        const data = await resend.emails.send({
+        from: 'BioWaste <onboarding@resend.dev>',
+        to: email,
+        subject: 'CODIGO DE VERIFICACION',
+        html: '<strong style="font-size: 40px" >1234</strong>'
+        });
+    
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
 };
 
