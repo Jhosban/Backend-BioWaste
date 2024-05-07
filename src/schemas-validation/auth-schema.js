@@ -16,9 +16,13 @@ export const registerSchema = Z.object({
     }),
     password: Z.string({
         required_error: "Password is required"
+    }).min(8, {
+        message: "Password must be at least 8 characters"
     }),
     confirmPassword: Z.string({
         required_error: "Confirmation of the password is required"
+    }).min(8, {
+        message: "Password must be at least 8 characters"
     })
 });
 
@@ -38,9 +42,13 @@ export const adminSchema = Z.object({
     }),
     password: Z.string({
         required_error: "Password is required"
+    }).min(8, {
+        message: "Password must be at least 8 characters"
     }),
     confirmPassword: Z.string({
         required_error: "Confirmation of the password is required"
+    }).min(8, {
+        message: "Password must be at least 8 characters"
     }),
     name: Z.string({
         required_error: "Name is required"
@@ -65,7 +73,7 @@ export const loginSchema = Z.object({
     }),
     password: Z.string({
         required_error: "Password is required"
-    }),
+    })
 })
 
 export const residenceSchema = Z.object({
