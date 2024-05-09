@@ -41,6 +41,10 @@ const adminSchema = new mongoose.Schema(
     postalCode: {
         type: String,
         required: true,
+    },
+    typeUser: {
+      type: String,
+      default: "admin",
     } 
   },
   {
