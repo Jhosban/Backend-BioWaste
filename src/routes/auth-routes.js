@@ -1,6 +1,5 @@
 import { Router } from "express";
 import {login, registrer, logout, adminRegistrer, createResidence} from '../controlers/auth-controller.js';
-import { authRequired } from "../middelwares/validate-token.js";
 import { validateSchema } from "../middelwares/validator.middelware.js";
 import {registerSchema, loginSchema, adminSchema, residenceSchema} from "../schemas-validation/auth-schema.js"
 
@@ -11,6 +10,5 @@ router.post("/adminRegister", validateSchema(adminSchema), adminRegistrer);
 router.post('/login',validateSchema(loginSchema), login);
 router.post('/logout', logout);
 router.post('/createResidence',validateSchema(residenceSchema), createResidence);
-
 
 export default router; 

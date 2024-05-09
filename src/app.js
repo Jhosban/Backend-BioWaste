@@ -3,6 +3,7 @@ import morgan from "morgan";
 import  cors  from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth-routes.js";
+import crudRouter from "./routes/crud-routes.js";
 
 
 const app = express();
@@ -14,7 +15,7 @@ app.use(cookieParser());
 
 app.use(express.json());
 
-app.use('/api',authRouter);
+app.use('/api', crudRouter, authRouter);
 
 
 export default app;
