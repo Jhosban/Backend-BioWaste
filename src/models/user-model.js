@@ -25,6 +25,24 @@ const userSchema = new mongoose.Schema(
     apartment: {
       type: String,
       required: true
+    },
+    plan: {
+      type: new mongoose.Schema({
+        planType: {
+          type: Number,
+          default: 0
+        },
+        progress: {
+          type: Number,
+          min: 0,
+          max: 100,
+          default: 0
+        },
+        streak: {
+          type: Number,
+          default: 0
+        } 
+      }),
     }
   },
   {
