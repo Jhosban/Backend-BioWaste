@@ -8,7 +8,7 @@ import { Resend } from 'resend';
 
 export const registrer = async (require, response) => {
     try {
-        const { username, email, phoneNumber, password, confirmPassword } = require.body;
+        const { username, email, phoneNumber, password, confirmPassword, apartment } = require.body;
 
         const passwordHash = await bcrypt.hash(password, 10)
 
@@ -18,6 +18,7 @@ export const registrer = async (require, response) => {
             phoneNumber,
             password: passwordHash,
             confirmPassword,
+            apartment
         });
 
         const passwordMatch = await bcrypt.compare(newUser.confirmPassword, newUser.password);
@@ -43,6 +44,7 @@ export const registrer = async (require, response) => {
             username: userSaved.username,
             email: userSaved.email,
             phoneNumber: userSaved.phoneNumber,
+            apartment: userSaved.apartment
         });
     } catch (err) {
         response.status(500).json({ message: err.message });
@@ -214,4 +216,3 @@ export const email_send = async (email) => {
         console.error(error);
     }
 };
-

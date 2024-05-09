@@ -23,6 +23,9 @@ export const registerSchema = Z.object({
         required_error: "Confirmation of the password is required"
     }).min(8, {
         message: "Password must be at least 8 characters"
+    }),
+    apartment : Z.string({
+        required_error: "Apartament is required"
     })
 });
 
