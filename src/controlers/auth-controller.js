@@ -112,7 +112,7 @@ export const adminRegistrer = async (require, response) => {
 
 export const login = async (require, response) => {
     try {
-        const { username, password } = require.body;
+        const { username, password, userType } = require.body;
         const adminFound = await Admin.findOne({ username })
         const userFound = await User.findOne({ username });
 
@@ -148,7 +148,8 @@ export const login = async (require, response) => {
             id: user._id,
             username: user.username,
             email: user.email,
-            phoneNumber: user.phoneNumber
+            phoneNumber: user.phoneNumber,
+            userType: user.userType
         });
     } catch (err) {
         response.status(500).json({ message: err.message });
