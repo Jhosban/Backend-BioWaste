@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { showUsers } from "../controlers/crud-controller.js";
+import { showUsers, deleteUser } from "../controlers/crud-controller.js";
 
 const router = Router()
 
 router.get('/showUsers', showUsers)
+router.get('/deleteUser/:id', deleteUser)
 
-export default router;
+export default router;  

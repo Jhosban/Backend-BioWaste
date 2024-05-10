@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema(
         default: 0
       }
     },
-    typeUser: {
+    userType: {
       type: String,
       default: "user"
     }
