@@ -8,7 +8,7 @@ import { Resend } from 'resend';
 
 export const registrer = async (require, response) => {
     try {
-        const { username, email, phoneNumber, password, confirmPassword, apartment,userType } = require.body;
+        const { username, email, phoneNumber, password, confirmPassword, apartment, userType } = require.body;
 
         const passwordHash = await bcrypt.hash(password, 10)
 
