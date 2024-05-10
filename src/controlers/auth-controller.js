@@ -8,7 +8,7 @@ import { Resend } from 'resend';
 
 export const registrer = async (require, response) => {
     try {
-        const { username, email, phoneNumber, password, confirmPassword, apartment } = require.body;
+        const { username, email, phoneNumber, password, confirmPassword, apartment,userType } = require.body;
 
         const passwordHash = await bcrypt.hash(password, 10)
 
@@ -18,7 +18,8 @@ export const registrer = async (require, response) => {
             phoneNumber,
             password: passwordHash,
             confirmPassword,
-            apartment
+            apartment,
+            userType
         });
 
         const passwordMatch = await bcrypt.compare(newUser.confirmPassword, newUser.password);
@@ -44,7 +45,8 @@ export const registrer = async (require, response) => {
             username: userSaved.username,
             email: userSaved.email,
             phoneNumber: userSaved.phoneNumber,
-            apartment: userSaved.apartment
+            apartment: userSaved.apartment,
+            userType: userSaved.userType
         });
     } catch (err) {
         response.status(500).json({ message: err.message });
@@ -54,7 +56,7 @@ export const registrer = async (require, response) => {
 
 export const adminRegistrer = async (require, response) => {
     try {
-        const { username, email, phoneNumber, password, confirmPassword, name, address, city, state, postalCode } = require.body;
+        const { username, email, phoneNumber, password, confirmPassword, name, address, city, state, postalCode, userType } = require.body;
 
         const passwordHash = await bcrypt.hash(password, 10)
 
@@ -68,7 +70,8 @@ export const adminRegistrer = async (require, response) => {
             address,
             city,
             state,
-            postalCode
+            postalCode,
+            userType
         });
 
         const passwordMatch = await bcrypt.compare(newAdmin.confirmPassword, newAdmin.password);
@@ -99,6 +102,7 @@ export const adminRegistrer = async (require, response) => {
             city: adminSaved.city,
             state: adminSaved.state,
             postalCode: adminSaved.postalCode,
+            userType: adminSaved.userType
         });
     } catch (err) {
         response.status(500).json({ message: err.message });
