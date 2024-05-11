@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { showUsers, deleteUser } from "../controlers/crud-controller.js";
+import { showUsers, deleteUser } from "../controllers/crud-controller.js";
 
 const router = Router()
 

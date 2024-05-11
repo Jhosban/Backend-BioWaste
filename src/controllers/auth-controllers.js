@@ -6,7 +6,7 @@ import { createAccessToken } from '../libs/jwt.js'
 import { Resend } from 'resend';
 
 
-export const registrer = async (require, response) => {
+export const register = async (require, response) => {
     try {
         const { username, email, phoneNumber, password, confirmPassword, apartment, userType } = require.body;
 
@@ -54,7 +54,7 @@ export const registrer = async (require, response) => {
 
 };
 
-export const adminRegistrer = async (require, response) => {
+export const adminRegister = async (require, response) => {
     try {
         const { username, email, phoneNumber, password, confirmPassword, name, address, city, state, postalCode, userType } = require.body;
 

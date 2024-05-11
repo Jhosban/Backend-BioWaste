@@ -25,7 +25,7 @@ export const registerSchema = Z.object({
         message: "Password must be at least 8 characters"
     }),
     apartment : Z.string({
-        required_error: "Apartament is required"
+        required_error: "Apartment is required"
     })
 });
 
@@ -84,7 +84,7 @@ export const residenceSchema = Z.object({
         required_error: "Name is required"
     }),
     numberOfResidents: Z.number({
-        required_error: "Number of recidents is required"
+        required_error: "Number of residents is required"
     }),
     emergencyNumber: Z.string({
         required_error: "Emergency number is required"
