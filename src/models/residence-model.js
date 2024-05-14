@@ -7,12 +7,12 @@ const residenceSchema = new mongoose.Schema(
       required: true,
     },
     numberOfResidents: {
-        type: Number,
-        require: true,
+      type: Number,
+      require: true,
     },
     emergencyNumber: {
-        type: String,
-        require: true
+      type: String,
+      require: true,
     },
     address: {
       type: String,
@@ -22,14 +22,14 @@ const residenceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    state:{
+    state: {
       type: String,
       required: true,
     },
     postalCode: {
-        type: String,
-        required: true,
-    } 
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

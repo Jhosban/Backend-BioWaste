@@ -15,12 +15,12 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    confirmPassword:{
+    confirmPassword: {
       type: String,
       required: true,
     },
     phoneNumber: {
-        type: String,
+      type: String,
     },
     name: {
       type: String,
@@ -34,18 +34,18 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    state:{
+    state: {
       type: String,
       required: true,
     },
     postalCode: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     userType: {
       type: String,
       default: "admin",
-    } 
+    },
   },
   {
     timestamps: true,

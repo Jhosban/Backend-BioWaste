@@ -4,48 +4,48 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: true
+      required: true,
     },
     email: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     password: {
       type: String,
-      required: true
+      required: true,
     },
-    confirmPassword:{
+    confirmPassword: {
       type: String,
       required: true,
     },
     phoneNumber: {
-        type: String
+      type: String,
     },
     apartment: {
       type: String,
-      required: true
+      required: true,
     },
     plan: {
       planType: {
         type: Number,
-        default: 0
+        default: 0,
       },
       progress: {
         type: Number,
         min: 0,
         max: 100,
-        default: 0
+        default: 0,
       },
       streak: {
         type: Number,
-        default: 0
-      }
+        default: 0,
+      },
     },
     userType: {
       type: String,
-      default: "user"
-    }
+      default: "user",
+    },
   },
   {
     timestamps: true,
