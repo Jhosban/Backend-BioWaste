@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { createAccessToken } from "../libs/jwt.js";
 import { Resend } from "resend";
 
-export const register = async (require, response) => {
+export const register = async (req, res) => {
   try {
     const {
       username,
@@ -15,7 +15,7 @@ export const register = async (require, response) => {
       confirmPassword,
       apartment,
       userType,
-    } = require.body;
+    } = req.body;
 
     const passwordHash = await bcrypt.hash(password, 10);
 
@@ -35,7 +35,7 @@ export const register = async (require, response) => {
     );
 
     if (!passwordMatch) {
-      return response.status(400).json({
+      return res.status(400).json({
         message: "Password don't match",
       });
     }
@@ -44,13 +44,13 @@ export const register = async (require, response) => {
 
     const token = await createAccessToken({ id: userSaved._id });
 
-    response.cookie("token", token, {
+    res.cookie("token", token, {
       httpOnly: process.env.NODE_ENV !== "development",
       secure: true,
       sameSite: "none",
     });
 
-    response.json({
+    res.json({
       id: userSaved._id,
       username: userSaved.username,
       email: userSaved.email,
@@ -59,11 +59,11 @@ export const register = async (require, response) => {
       userType: userSaved.userType,
     });
   } catch (err) {
-    response.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
-export const adminRegister = async (require, response) => {
+export const adminRegister = async (req, res) => {
   try {
     const {
       username,
@@ -77,7 +77,7 @@ export const adminRegister = async (require, response) => {
       state,
       postalCode,
       userType,
-    } = require.body;
+    } = req.body;
 
     const passwordHash = await bcrypt.hash(password, 10);
 
@@ -101,7 +101,7 @@ export const adminRegister = async (require, response) => {
     );
 
     if (!passwordMatch) {
-      return response.status(400).json({
+      return res.status(400).json({
         message: "Password do not match",
       });
     }
@@ -110,13 +110,13 @@ export const adminRegister = async (require, response) => {
 
     const token = await createAccessToken({ id: adminSaved._id });
 
-    response.cookie("token", token, {
+    res.cookie("token", token, {
       httpOnly: process.env.NODE_ENV !== "development",
       secure: true,
       sameSite: "none",
     });
 
-    response.json({
+    res.json({
       id: adminSaved._id,
       username: adminSaved.username,
       email: adminSaved.email,
@@ -129,18 +129,18 @@ export const adminRegister = async (require, response) => {
       userType: adminSaved.userType,
     });
   } catch (err) {
-    response.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
-export const login = async (require, response) => {
+export const login = async (req, res) => {
   try {
-    const { username, password, userType } = require.body;
+    const { username, password, userType } = req.body;
     const adminFound = await Admin.findOne({ username });
     const userFound = await User.findOne({ username });
 
     if (!userFound && !adminFound)
-      return response.status(400).json({
+      return res.status(400).json({
         message: ["User not found"],
       });
 
@@ -153,20 +153,20 @@ export const login = async (require, response) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return response.status(400).json({
+      return res.status(400).json({
         message: ["The password is incorrect"],
       });
     }
 
     const token = await createAccessToken({ id: user._id });
 
-    response.cookie("token", token, {
+    res.cookie("token", token, {
       httpOnly: process.env.NODE_ENV !== "development",
       secure: true,
       sameSite: "none",
     });
 
-    response.json({
+    res.json({
       id: user._id,
       username: user.username,
       email: user.email,
@@ -174,20 +174,20 @@ export const login = async (require, response) => {
       userType: user.userType,
     });
   } catch (err) {
-    response.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
-export const logout = async (require, response) => {
-  response.cookie("token", "", {
+export const logout = async (req, res) => {
+  res.cookie("token", "", {
     httpOnly: true,
     secure: true,
     expires: new Date(0),
   });
-  return response.sendStatus(200);
+  return res.sendStatus(200);
 };
 
-export const createResidence = async (require, response) => {
+export const createResidence = async (req, res) => {
   try {
     const {
       name,
@@ -197,7 +197,7 @@ export const createResidence = async (require, response) => {
       city,
       state,
       postalCode,
-    } = require.body;
+    } = req.body;
 
     const newResidence = new Residence({
       name,
@@ -213,13 +213,13 @@ export const createResidence = async (require, response) => {
 
     const token = await createAccessToken({ id: residenceSaved._id });
 
-    response.cookie("token", token, {
+    res.cookie("token", token, {
       httpOnly: process.env.NODE_ENV !== "development",
       secure: true,
       sameSite: "none",
     });
 
-    response.json({
+    res.json({
       id: residenceSaved._id,
       name: residenceSaved.name,
       numberOfResidents: residenceSaved.numberOfResidents,
@@ -230,7 +230,7 @@ export const createResidence = async (require, response) => {
       postalCode: residenceSaved.postalCode,
     });
   } catch (err) {
-    response.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
