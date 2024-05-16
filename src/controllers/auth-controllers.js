@@ -4,6 +4,7 @@ import Residence from "../models/residence-model.js";
 import bcrypt from "bcryptjs";
 import { createAccessToken } from "../libs/jwt.js";
 import { Resend } from "resend";
+import { customAlphabet } from "nanoid";
 
 export const register = async (req, res) => {
   try {
@@ -196,10 +197,13 @@ export const createResidence = async (req, res) => {
       address,
       city,
       state,
-      postalCode,
+      postalCode
     } = req.body;
 
+    const codeID = customAlphabet("0123456789", 4);
+
     const newResidence = new Residence({
+      _id: codeID(),
       name,
       numberOfResidents,
       emergencyNumber,
@@ -220,7 +224,7 @@ export const createResidence = async (req, res) => {
     });
 
     res.json({
-      id: residenceSaved._id,
+      _id: residenceSaved._id,
       name: residenceSaved.name,
       numberOfResidents: residenceSaved.numberOfResidents,
       emergencyNumber: residenceSaved.emergencyNumber,

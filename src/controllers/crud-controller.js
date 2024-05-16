@@ -1,4 +1,5 @@
 import User from "../models/user-model.js";
+import Residence from "../models/residence-model.js";
 
 export const showUsers = async (req, res) => {
   try {
@@ -22,3 +23,13 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const showResidences = async (req, res) => {
+  try {
+    const residence = await Residence.find({_id: req.params.id})
+
+    res.status(200).json(residence);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}

@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
+import { number } from "zod";
 
 const residenceSchema = new mongoose.Schema(
   {
+    _id: {
+      type: Number
+    },
     name: {
       type: String,
       required: true,
