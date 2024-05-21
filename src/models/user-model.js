@@ -46,6 +46,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "user",
     },
+    residence: {
+      type: mongoose.Schema.Types.Number,
+      ref: "Residence",
+    },
   },
   {
     timestamps: true,

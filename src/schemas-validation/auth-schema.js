@@ -103,4 +103,7 @@ export const residenceSchema = Z.object({
   postalCode: Z.string({
     required_error: "Postal code is required",
   }),
+  admin: Z.string({
+    required_error: "Admin is required",
+  }),
 });

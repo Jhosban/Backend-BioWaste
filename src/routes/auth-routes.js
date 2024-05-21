@@ -5,7 +5,7 @@ import {registerSchema, loginSchema, adminSchema, residenceSchema} from "../sche
 
 const router = Router()
 
-router.post('register',validateSchema(registerSchema), register);
+router.post('/register',validateSchema(registerSchema), register);
 router.post("/adminRegister", validateSchema(adminSchema), adminRegister);
 router.post('/login',validateSchema(loginSchema), login);
 router.post('/logout', logout);

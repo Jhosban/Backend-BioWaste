@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { number } from "zod";
 
 const residenceSchema = new mongoose.Schema(
   {
@@ -33,6 +32,11 @@ const residenceSchema = new mongoose.Schema(
     postalCode: {
       type: String,
       required: true,
+    },
+    admin: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      unique: true
     },
   },
   {

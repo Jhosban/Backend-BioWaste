@@ -77,7 +77,7 @@ export const adminRegister = async (req, res) => {
       city,
       state,
       postalCode,
-      userType,
+      userType
     } = req.body;
 
     const passwordHash = await bcrypt.hash(password, 10);
@@ -197,8 +197,17 @@ export const createResidence = async (req, res) => {
       address,
       city,
       state,
-      postalCode
+      postalCode,
+      admin
     } = req.body;
+
+    const adminFound = await Admin.findOne({username: admin});
+
+    if (!adminFound) {
+      return res.status(400).json({
+        message: "Admin not found"
+      });
+    }
 
     const codeID = customAlphabet("0123456789", 4);
 
@@ -211,6 +220,7 @@ export const createResidence = async (req, res) => {
       city,
       state,
       postalCode,
+      admin: adminFound
     });
 
     const residenceSaved = await newResidence.save();
@@ -232,6 +242,7 @@ export const createResidence = async (req, res) => {
       city: residenceSaved.city,
       state: residenceSaved.state,
       postalCode: residenceSaved.postalCode,
+      admin: residenceSaved.admin
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -242,14 +253,13 @@ export const email_send = async (email) => {
   const resend = new Resend("re_K4i38cCc_EvUCMRrtaLrV7mmPastDSmMk");
 
   try {
-    const data = await resend.emails.send({
+    await resend.emails.send({
       from: "BioWaste <onboarding@resend.dev>",
       to: email,
       subject: "CODIGO DE VERIFICACION",
       html: '<strong style="font-size: 40px" >1234</strong>',
     });
 
-    console.log(data);
   } catch (error) {
     console.error(error);
   }

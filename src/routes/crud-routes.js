@@ -3,7 +3,7 @@ import { showUsers, deleteUser, showResidences } from "../controllers/crud-contr
 
 const router = Router()
 
-router.get('/showUsers', showUsers)
+router.get('/showUsers/:id', showUsers)
 router.get('/deleteUser/:id', deleteUser)
 router.get('/showResidence/:id', showResidences)
 
