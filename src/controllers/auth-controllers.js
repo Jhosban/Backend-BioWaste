@@ -2,7 +2,6 @@ import User from "../models/user-model.js";
 import Admin from "../models/admin-model.js";
 import Residence from "../models/residence-model.js";
 import bcrypt from "bcryptjs";
-import { createAccessToken } from "../libs/jwt.js";
 import { Resend } from "resend";
 import { customAlphabet } from "nanoid";
 
@@ -42,14 +41,6 @@ export const register = async (req, res) => {
     }
 
     const userSaved = await newUser.save();
-
-    const token = await createAccessToken({ id: userSaved._id });
-
-    res.cookie("token", token, {
-      httpOnly: process.env.NODE_ENV !== "development",
-      secure: true,
-      sameSite: "none",
-    });
 
     res.json({
       id: userSaved._id,
@@ -109,14 +100,6 @@ export const adminRegister = async (req, res) => {
 
     const adminSaved = await newAdmin.save();
 
-    const token = await createAccessToken({ id: adminSaved._id });
-
-    res.cookie("token", token, {
-      httpOnly: process.env.NODE_ENV !== "development",
-      secure: true,
-      sameSite: "none",
-    });
-
     res.json({
       id: adminSaved._id,
       username: adminSaved.username,
@@ -159,14 +142,6 @@ export const login = async (req, res) => {
       });
     }
 
-    const token = await createAccessToken({ id: user._id });
-
-    res.cookie("token", token, {
-      httpOnly: process.env.NODE_ENV !== "development",
-      secure: true,
-      sameSite: "none",
-    });
-
     res.json({
       id: user._id,
       username: user.username,
@@ -177,15 +152,6 @@ export const login = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-};
-
-export const logout = async (req, res) => {
-  res.cookie("token", "", {
-    httpOnly: true,
-    secure: true,
-    expires: new Date(0),
-  });
-  return res.sendStatus(200);
 };
 
 export const createResidence = async (req, res) => {
@@ -224,14 +190,6 @@ export const createResidence = async (req, res) => {
     });
 
     const residenceSaved = await newResidence.save();
-
-    const token = await createAccessToken({ id: residenceSaved._id });
-
-    res.cookie("token", token, {
-      httpOnly: process.env.NODE_ENV !== "development",
-      secure: true,
-      sameSite: "none",
-    });
 
     res.json({
       _id: residenceSaved._id,
