@@ -35,8 +35,8 @@ const residenceSchema = new mongoose.Schema(
     },
     admin: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      unique: true
+      ref: "Admin",
+      required: true
     },
   },
   {
