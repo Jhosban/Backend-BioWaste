@@ -110,7 +110,7 @@ export const updateUserById = async (req, res) => {
     Response.message = "User updated successfully";
     Response.result = result;
 
-    res.status(201).send(Response);
+    res.status(200).send(Response);
   } catch (err) {
     Response.status = 500;
     Response.message = "Error updating user";
