@@ -84,7 +84,7 @@ export const assignUserToResidence = async (req, res) => {
     const result = await UserRepository.assingUserById(userId,residenceId)
     Response.status = 200;
     Response.message = "User assigned successfully";
-    //Response.result = result;
+    Response.result = result;
 
     res.status(200).send(Response);
   } catch (err) {

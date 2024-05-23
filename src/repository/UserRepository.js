@@ -44,7 +44,7 @@ export async function deleteUserById (id){
 
 export async function updateUserById (id, body) {
     try {
-        await UserModel.findByIdAndUpdate(id, body, {
+        return await UserModel.findByIdAndUpdate(id, body, {
             new: true
         })
     } catch (err) {
@@ -54,7 +54,7 @@ export async function updateUserById (id, body) {
 
 export async function assingUserById (id, residenceId) {
     try {
-        await UserModel.findByIdAndUpdate(id, {$set: { residence: residenceId }}, {
+        return await UserModel.findByIdAndUpdate(id, {$set: { residence: residenceId }}, {
             new: true
         })
     } catch (err) {
