@@ -119,3 +119,22 @@ export const updateUserById = async (req, res) => {
     res.status(500).send(Response);
   }
 }
+
+export const findUserById = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const result = await UserRepository.findUserById(id);
+    Response.status = 200;
+    Response.message = "User found successfully";
+    Response.result = result;
+
+    res.status(200).send(Response);
+  } catch (err) {
+    Response.status = 500;
+    Response.message = "Error finding user";
+    Response.result = err.message;
+
+    res.status(500).send(Response);
+  }
+}

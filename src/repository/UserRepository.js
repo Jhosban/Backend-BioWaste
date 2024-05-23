@@ -8,6 +8,14 @@ export async function createUser (newUser) {
     }
 }
 
+export async function findUserById (id) {
+    try {
+        return await UserModel.findOne({ _id: id })
+    } catch (err) {
+        throw new Error("Error finding user: " + err);
+    }
+}
+
 export async function findUserByUsername (username) {
     try {
         return await UserModel.findOne({ username: username })
@@ -54,4 +62,5 @@ export async function assingUserById (id, residenceId) {
         console.log(err)
     }
 }
-export default { createUser, findUserByUsername, findUsersByResidenceId, deleteUserById, updateUserById, assingUserById };
+
+export default { createUser, findUserByUsername, findUsersByResidenceId, deleteUserById, updateUserById, assingUserById, findUserById };
