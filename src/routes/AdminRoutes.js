@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {registerAdmin, submitVerificationCode} from "../controllers/AdminController.js";
-import { validateSchema } from "../middlewares/middlewares.js";
-import { adminSchema } from "../schemas-validation/auth-schema.js";
+import { validateSchema } from "../middlewares/Middlewares.js";
+import { adminSchema } from "../schemas-validation/Auth-schema.js";
 
 
 const router = Router();

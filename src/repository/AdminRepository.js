@@ -1,4 +1,4 @@
-import AdminModel from "../models/admin-model.js";
+import AdminModel from "../models/Admin-model.js";
 
 export async function createAdmin (newAdmin) {
     try {

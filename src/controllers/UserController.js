@@ -1,4 +1,4 @@
-import UserModel from "../models/user-model.js";
+import UserModel from "../models/User-model.js";
 import UserRepository from "../repository/UserRepository.js";
 import bcrypt from "bcryptjs";
 import Response from "../utils/Response.js";
@@ -61,4 +61,61 @@ export const registerUser = async (req, res) => {
 
         res.status(500).send(Response);
     }   
+}
+
+export const showUsersByResidence = async (req, res) => {
+  try {
+    const residenceId = req.params.id;
+
+    const result = await UserRepository.findUsersByResidenceId(residenceId);
+    Response.status = 200;
+    Response.message = "Correctly Listed Users";
+    Response.result = result;
+
+    res.status(201).send(Response);
+  } catch (err) {
+    Response.status = 500;
+    Response.message = "Error listing users";
+    Response.result = err.message;
+
+    res.status(500).send(Response);
+  }
+}
+
+export const deleteUserById = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    await UserRepository.deleteUserById(id);
+    Response.status = 200;
+    Response.message = "User deleted successfully";
+
+    res.status(201).send(Response);
+  } catch (err) {
+    Response.status = 500;
+    Response.message = "Error deleting user";
+    Response.result = err.message;
+
+    res.status(500).send(Response);
+  }
+}
+
+export const updateUserById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const body = req.body;
+
+    const result = await UserRepository.updateUserById(id, body);
+    Response.status = 200;
+    Response.message = "User updated successfully";
+    Response.result = result;
+
+    res.status(201).send(Response);
+  } catch (err) {
+    Response.status = 500;
+    Response.message = "Error updating user";
+    Response.result = err.message;
+
+    res.status(500).send(Response);
+  }
 }

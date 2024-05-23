@@ -1,4 +1,4 @@
-import AdminModel from "../models/admin-model.js";
+import AdminModel from "../models/Admin-model.js";
 import AdminRepository from "../repository/AdminRepository.js";
 import bcrypt from "bcryptjs";
 import Response from "../utils/Response.js";
