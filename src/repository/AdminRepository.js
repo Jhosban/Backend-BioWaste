@@ -16,4 +16,22 @@ export async function findAdminByUsername (username) {
     }
 }
 
-export default { createAdmin, findAdminByUsername };
+export async function findAdminById (id) {
+    try {
+        return await AdminModel.findOne({ _id: id })
+    } catch (err) {
+        throw new Error("Error finding administrator: " + err);
+    }
+}
+
+export async function updateAdminById (id, body) {
+    try {
+        return await AdminModel.findByIdAndUpdate(id, body, {
+            new: true
+        })
+    } catch (err) {
+        throw new Error("Error updating Administrator: ", err);
+    }
+}
+
+export default { createAdmin, findAdminByUsername, findAdminById, updateAdminById };

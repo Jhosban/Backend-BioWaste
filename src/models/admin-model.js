@@ -47,6 +47,10 @@ const adminSchema = new mongoose.Schema(
       type: String,
       default: "admin",
     },
+    residence: {
+      type: mongoose.Schema.Types.Number,
+      ref: "Residence"
+    }
   },
   {
     timestamps: true,

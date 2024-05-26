@@ -58,8 +58,7 @@ export async function assingUserById (id, residenceId) {
             new: true
         })
     } catch (err) {
-        //throw new Error("Error assigning user: ", err);
-        console.log(err)
+        throw new Error("Error assigning user: ", err);
     }
 }
 

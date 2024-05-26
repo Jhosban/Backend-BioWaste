@@ -49,7 +49,7 @@ export const registerAdmin = async (req, res) => {
 
           const result = await AdminRepository.createAdmin(newAdmin);
           const dataSend = {
-            id: result._id,
+            _id: result._id,
             username: result.username,
             email: result.email,
             phoneNumber: result.phoneNumber,

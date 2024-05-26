@@ -52,6 +52,9 @@ export const registerResidence = async (req, res) => {
             postalCode: result.postalCode,
             admin: result.admin
           }
+
+          await AdminRepository.updateAdminById(adminFound, {residence: result._id} )
+
           Response.status = 201;
           Response.message = "Residence created successfully";
           Response.result = dataSend;

@@ -1,5 +1,6 @@
 import UserModel from "../models/User-model.js";
 import UserRepository from "../repository/UserRepository.js";
+import AdminRepository from "../repository/AdminRepository.js";
 import bcrypt from "bcryptjs";
 import Response from "../utils/Response.js";
 
@@ -40,7 +41,7 @@ export const registerUser = async (req, res) => {
 
           const result = await UserRepository.createUser(newUser);
           const dataSend = {
-            id: result._id,
+            _id: result._id,
             username: result.username,
             email: result.email,
             phoneNumber: result.phoneNumber,
@@ -105,7 +106,20 @@ export const updateUserById = async (req, res) => {
     const id = req.params.id;
     const body = req.body;
 
-    const result = await UserRepository.updateUserById(id, body);
+    if(body.password) {
+      const passwordHash = await bcrypt.hash(body.password, 10);
+      body.password = passwordHash;
+    }
+
+    const adminFound = await AdminRepository.findAdminById(id)
+
+    let result;
+    if (adminFound) {
+      result = await AdminRepository.updateAdminById(id, body);
+    } else {
+      result = await UserRepository.updateUserById(id, body);
+    }
+
     Response.status = 200;
     Response.message = "User updated successfully";
     Response.result = result;

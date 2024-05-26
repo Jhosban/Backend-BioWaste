@@ -29,14 +29,15 @@ export const loginClient = async (req, res) => {
                 message: "The password is incorrect",
         });
         }
-
+        
         const dataSend = {
-        id: client._id,
+        _id: client._id,
         username: client.username,
         email: client.email,
         phoneNumber: client.phoneNumber,
         apartment: client.apartment,
         userType: client.userType,
+        residence: client.residence
         }
         Response.status = 200;
         Response.message = "Successful login";
