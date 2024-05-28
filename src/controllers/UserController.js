@@ -138,7 +138,18 @@ export const findUserById = async (req, res) => {
   try {
     const id = req.params.id;
 
-    const result = await UserRepository.findUserById(id);
+    const user = await UserRepository.findUserById(id);
+    const admin = await AdminRepository.findAdminById(id);
+
+    let result;
+    if (user) {
+      result = user
+    }
+
+    if (admin) {
+      result = admin
+    }
+  
     Response.status = 200;
     Response.message = "User found successfully";
     Response.result = result;
