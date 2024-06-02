@@ -51,9 +51,7 @@ const userSchema = new mongoose.Schema(
       ref: "Residence",
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 export default mongoose.model("User", userSchema);

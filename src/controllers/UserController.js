@@ -5,64 +5,62 @@ import bcrypt from "bcryptjs";
 import Response from "../utils/Response.js";
 
 export const registerUser = async (req, res) => {
-    try {
-        const {
-            username,
-            email,
-            phoneNumber,
-            password,
-            confirmPassword,
-            apartment,
-            userType,
-          } = req.body;
+  try {
+    const {
+      username,
+      email,
+      phoneNumber,
+      password,
+      confirmPassword,
+      apartment,
+      userType,
+    } = req.body;
 
-          const passwordHash = await bcrypt.hash(password, 10);
+    const passwordHash = await bcrypt.hash(password, 10);
 
-          const newUser = new UserModel({
-            username,
-            email,
-            phoneNumber,
-            password: passwordHash,
-            confirmPassword,
-            apartment,
-            userType
-          });
-      
-          const passwordMatch = await bcrypt.compare(
-            newUser.confirmPassword,
-            newUser.password
-          );
-      
-          if (!passwordMatch) {
-            return res.status(400).json({
-              message: "Password don't match",
-            });
-          }
+    const newUser = new UserModel({
+      username,
+      email,
+      phoneNumber,
+      password: passwordHash,
+      confirmPassword,
+      apartment,
+      userType,
+    });
 
-          const result = await UserRepository.createUser(newUser);
-          const dataSend = {
-            _id: result._id,
-            username: result.username,
-            email: result.email,
-            phoneNumber: result.phoneNumber,
-            apartment: result.apartment,
-            userType: result.userType,
-          }
-          Response.status = 201;
-          Response.message = "User created successfully";
-          Response.result = dataSend;
+    const passwordMatch = await bcrypt.compare(
+      newUser.confirmPassword,
+      newUser.password
+    );
 
-          res.status(201).send(Response);
+    if (!passwordMatch) {
+      return res.status(400).json({
+        message: "Password don't match",
+      });
+    }
 
-          
-    } catch (err) {
-        Response.status = 500;
-        Response.message = "Error when registering user";
-        Response.result = err.message;
+    const result = await UserRepository.createUser(newUser);
+    const dataSend = {
+      _id: result._id,
+      username: result.username,
+      email: result.email,
+      phoneNumber: result.phoneNumber,
+      apartment: result.apartment,
+      userType: result.userType,
+    };
+    Response.status = 201;
+    Response.message = "User created successfully";
+    Response.result = dataSend;
 
-        res.status(500).send(Response);
-    }   
-}
+    res.status(201).send(Response);
+  } catch (err) {
+    Response.status = 500;
+    Response.message = "Error when registering user";
+    Response.result = err.message;
+
+    res.status(500).send(Response);
+  }
+};
 
 export const showUsersByResidence = async (req, res) => {
   try {
@@ -73,7 +71,7 @@ export const showUsersByResidence = async (req, res) => {
     Response.message = "Correctly Listed Users";
     Response.result = result;
 
-    res.status(201).send(Response);
+    res.status(200).send(Response);
   } catch (err) {
     Response.status = 500;
     Response.message = "Error listing users";
@@ -81,17 +79,18 @@ export const showUsersByResidence = async (req, res) => {
 
     res.status(500).send(Response);
   }
-}
+};
 
-export const deleteUserById = async (req, res) => {
+export const deleteUserFromResidence = async (req, res) => {
   try {
     const id = req.params.id;
 
     await UserRepository.deleteUserById(id);
     Response.status = 200;
     Response.message = "User deleted successfully";
+    Response.result = "";
 
-    res.status(201).send(Response);
+    res.status(200).send(Response);
   } catch (err) {
     Response.status = 500;
     Response.message = "Error deleting user";
@@ -99,19 +98,19 @@ export const deleteUserById = async (req, res) => {
 
     res.status(500).send(Response);
   }
-}
+};
 
 export const updateUserById = async (req, res) => {
   try {
     const id = req.params.id;
     const body = req.body;
 
-    if(body.password) {
+    if (body.password) {
       const passwordHash = await bcrypt.hash(body.password, 10);
       body.password = passwordHash;
     }
 
-    const adminFound = await AdminRepository.findAdminById(id)
+    const adminFound = await AdminRepository.findAdminById(id);
 
     let result;
     if (adminFound) {
@@ -132,7 +131,7 @@ export const updateUserById = async (req, res) => {
 
     res.status(500).send(Response);
   }
-}
+};
 
 export const findUserById = async (req, res) => {
   try {
@@ -143,13 +142,13 @@ export const findUserById = async (req, res) => {
 
     let result;
     if (user) {
-      result = user
+      result = user;
     }
 
     if (admin) {
-      result = admin
+      result = admin;
     }
-  
+
     Response.status = 200;
     Response.message = "User found successfully";
     Response.result = result;
@@ -162,4 +161,4 @@ export const findUserById = async (req, res) => {
 
     res.status(500).send(Response);
   }
-}
+};

@@ -52,9 +52,7 @@ const adminSchema = new mongoose.Schema(
       ref: "Residence"
     }
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 export default mongoose.model("Admin", adminSchema);
