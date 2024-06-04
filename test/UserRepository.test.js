@@ -35,6 +35,7 @@ describe("Tests in user Repository", () => {
             residence: 1234
         }
         usersMock = [{
+            _id: "1234567890",
             username: "usertest",
             apartment: "402",
             "plans": {

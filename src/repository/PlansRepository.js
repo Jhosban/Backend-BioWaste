@@ -44,7 +44,7 @@ export async function getStreak(userId) {
         return user.streak
         
     } catch (err) {
-        throw new Error("Error getting plans");
+        throw new Error("Error getting streak");
     }
 }
 

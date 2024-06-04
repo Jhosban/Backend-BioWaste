@@ -1,4 +1,4 @@
-import chai from "chai";
+import chai, { should } from "chai";
 import sinon from "sinon";
 const { expect } = chai;
 import chaiString from "chai-string";
@@ -9,6 +9,7 @@ import UserModel from "../src/models/User-model.js";
 
 describe("Tests in Plans Repository", () => {
     let stubFindOne;
+    let stubUpdate;
     let plansMock;
 
     beforeEach(() => {
@@ -27,6 +28,7 @@ describe("Tests in Plans Repository", () => {
             }
         }
         stubFindOne = sinon.stub(UserModel, 'findOne');
+        stubUpdate = sinon.stub(UserModel, 'findByIdAndUpdate');
     });
     
     afterEach(() => {
@@ -37,7 +39,7 @@ describe("Tests in Plans Repository", () => {
         const userId = "1234567890"; 
         stubFindOne.resolves({_id: userId, plans: plansMock});
 
-        const result = await PlansRepository.getPlans(_id);
+        const result = await PlansRepository.getPlans(userId);
 
         expect(result).to.deep.equal(plansMock);
         expect(stubFindOne.calledOnceWith({ _id: userId })).to.be.true;
@@ -55,15 +57,80 @@ describe("Tests in Plans Repository", () => {
     });
 
     it('Should return one plan of the user', async () => {
-        const userId = '12345';
-        const planName = 'premium';
-        const expectedPlan = { planId: 'abc123', details: 'Premium plan details' };
+        const userId = '1234567890';
+        const planName = 'plan1';
 
-        // Mock UserModel.findOne to return a user document with the specified plan
-        UserModel.findOne.resolves({ _id: userId, plans: { [planName]: expectedPlan } });
+        stubFindOne.resolves({ _id: userId, plans: { plan1: plansMock[planName] } });
 
-        const plan = await getPlan(userId, planName);
-        expect(plan).to.deep.equal(expectedPlan);
+        const result = await PlansRepository.getPlan(userId, planName);
+
+        expect(result).to.deep.equal(plansMock[planName]);
+        expect(stubFindOne.calledOnceWith({ _id: userId })).to.be.true;
+    });
+
+    it('Should throw an error when get plan fails', async () => {
+        const userId = '1234567890';
+        const planName = 'plan1';
+
+        stubFindOne.resolves({ _id: userId, plans: { plan1: plansMock[planName] } }).rejects('Error getting plan');
+
+        try {
+            await PlansRepository.getPlan(userId, planName);
+        } catch (err) {
+            expect(err.message).to.equal('Error getting plan');
+        }
+    });
+
+    it('Should save the plan of the user', async () => {
+        const userId = '1234567890';
+        const planName = 'plan1';
+        const updateplan = { progress: 50 };
+
+        stubUpdate.resolves({ _id: userId, plans: { [planName]: updateplan } });
+
+        const result = await PlansRepository.savePlan(userId, planName, updateplan);
+
+        expect(result.plans[planName]).to.deep.equal(updateplan);
+        expect(stubUpdate.calledOnceWith({ _id: userId }, { $set: { [`plans.${planName}`]: updateplan } }, { new: true })).to.be.true;
+    });
+
+    it('Should throw an error when save plan fails', async () => {
+        const userId = '1234567890';
+        const planName = 'plan1';
+        const updateplan = { progress: 50 };    
+
+        stubUpdate.resolves({ _id: userId, plans: { [planName]: updateplan } }).rejects('Error saving plan');
+
+        try {
+            await PlansRepository.savePlan(userId, planName, updateplan);
+        } catch (err) {
+            expect(err.message).to.equal('Error saving plan');
+        }
+    });
+
+    it('Should return the streak of the user', async () => {
+        const userId = '1234567890';
+        const expectedStreak = 0;
+
+        stubFindOne.resolves({ _id: userId, streak: expectedStreak });
+
+        const streak = await PlansRepository.getStreak(userId);
+
+        expect(streak).to.equal(expectedStreak);
+        expect(stubFindOne.calledOnceWith({ _id: userId })).to.be.true;
+    })
+
+    it('Should throw an error when get streak fails', async () => {
+        const userId = '1234567890';
+        const expectedStreak = 0;
+
+        stubFindOne.resolves({ _id: userId, streak: expectedStreak }).rejects('Error getting streak');
+
+        try {
+            await PlansRepository.getStreak(userId);
+        } catch (err) {
+            expect(err.message).to.equal('Error getting streak');
+        }
     });
      
 });    
