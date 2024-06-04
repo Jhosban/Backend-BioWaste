@@ -4,15 +4,15 @@ export async function createResidence(newResidence) {
   try {
     return await newResidence.save();
   } catch (err) {
-    throw new Error("Error creating residence: " + err);
+    throw new Error("Error creating residence");
   }
 }
 
 export async function findResidenceById(residenceId) {
   try {
-    return await ResidenceModel.findOne({ id: residenceId });
+    return await ResidenceModel.findOne({ _id: residenceId });
   } catch (err) {
-    throw new Error("Error finding residence: " + err);
+    throw new Error("Error finding residence");
   }
 }
 

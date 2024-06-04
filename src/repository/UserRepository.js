@@ -4,7 +4,7 @@ export async function createUser(newUser) {
   try {
     return await newUser.save();
   } catch (err) {
-    throw new Error("Error creating user: " + err);
+    throw new Error("Error creating user");
   }
 }
 
@@ -12,7 +12,7 @@ export async function findUserById(id) {
   try {
     return await UserModel.findOne({ _id: id });
   } catch (err) {
-    throw new Error("Error finding user: " + err);
+    throw new Error("Error finding user");
   }
 }
 
@@ -20,7 +20,7 @@ export async function findUserByUsername(username) {
   try {
     return await UserModel.findOne({ username: username });
   } catch (err) {
-    throw new Error("Error finding user: " + err);
+    throw new Error("Error finding user");
   }
 }
 
@@ -30,7 +30,8 @@ export async function findUsersByResidenceId(residenceId) {
       .select("username apartment userType plan")
       .lean();
   } catch (err) {
-    throw new Error("Error finding users: ", err);
+    // throw new Error("Error finding users");
+    console.log(err);
   }
 }
 
@@ -39,9 +40,8 @@ export async function deleteUserById(id) {
     const user = await UserModel.findByIdAndUpdate(id, {
       residence: null,
     });
-    console.log(user);
   } catch (err) {
-    throw new Error("Error deleting user: ", err);
+    throw new Error("Error deleting user");
   }
 }
 
@@ -51,7 +51,7 @@ export async function updateUserById(id, body) {
       new: true,
     });
   } catch (err) {
-    throw new Error("Error updating user: ", err);
+    throw new Error("Error updating user");
   }
 }
 
@@ -65,7 +65,7 @@ export async function assingUserById(id, residenceId) {
       }
     );
   } catch (err) {
-    throw new Error("Error assigning user: ", err);
+    throw new Error("Error assigning user");
   }
 }
 
