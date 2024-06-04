@@ -33,6 +33,20 @@ export const updatePlansByUser = async (req, res) => {
       return res.status(404).json({ message: "User or plans not found" });
     }
 
+    const plan1 = await PlansRepository.getPlan(userId, "plan1");
+    const plan2 = await PlansRepository.getPlan(userId, "plan2");
+    const plan3 = await PlansRepository.getPlan(userId, "plan3");
+
+    if (plan1.progress === 100 && plan2.progress === 100 && plan3.progress === 100) {
+      plan1.progress = 0;
+      plan2.progress = 0;
+      plan3.progress = 0;
+      await PlansRepository.savePlan(userId, "plan1", plan1);
+      await PlansRepository.savePlan(userId, "plan2", plan2);
+      await PlansRepository.savePlan(userId, "plan3", plan3);
+      return res.status(200).json({ message: "plans reinitialized" });
+    }
+
     const plan = await PlansRepository.getPlan(userId, planName);
 
     let progress = plan.progress;
@@ -84,36 +98,6 @@ export const getStreaksByUser = async (req, res) => {
   }
 };
 
-export const plansCompleted = async (req, res) => {
-  try {
-    const userId = req.params.id;
-    
-    const plan1 = await PlansRepository.getPlan(userId, "plan1");
-    const plan2 = await PlansRepository.getPlan(userId, "plan2");
-    const plan3 = await PlansRepository.getPlan(userId, "plan3");
-
-    if (plan1.progress === 100 && plan2.progress === 100 && plan3.progress === 100) {
-      plan1.progress = 0;
-      plan2.progress = 0;
-      plan3.progress = 0;
-      await PlansRepository.savePlan(userId, "plan1", plan1);
-      await PlansRepository.savePlan(userId, "plan2", plan2);
-      await PlansRepository.savePlan(userId, "plan3", plan3);
-    } 
-
-    Response.status = 200;
-    Response.message = "Plans completed";
-    Response.result = "";
-
-    res.status(200).send(Response);
-    } catch (err) {
-      Response.status = 500;
-      Response.message = "Error";
-      Response.result = err.message;
-  
-      res.status(500).send(Response);
-    }  
-}
 
 
 
