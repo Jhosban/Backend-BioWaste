@@ -34,26 +34,44 @@ describe("Tests in user Repository", () => {
             apartment: "402",
             residence: 1234
         }
-        usersMock = [{
-            _id: "1234567890",
-            username: "usertest",
-            apartment: "402",
-            "plans": {
-                "plan1": {
-                  "_id": 1,
-                  "progress": 0
+        usersMock = [
+            {
+              _id: '1',
+              username: 'user1',
+              apartment: 'Apartment 1',
+              userType: 'Type 1',
+              plans: {
+                plan1: {
+                  progress: 50,
                 },
-                "plan2": {
-                  "_id": 2,
-                  "progress": 0
+                plan2: {
+                  progress: 75,
                 },
-                "plan3": {
-                  "_id": 3,
-                  "progress": 0
+                plan3: {
+                  progress: 100,
                 },
               },
-            userType: "user"
-        }]
+              streak: 3,
+            },
+            {
+              _id: '2',
+              username: 'user2',
+              apartment: 'Apartment 2',
+              userType: 'Type 2',
+              plans: {
+                plan1: {
+                  progress: 25,
+                },
+                plan2: {
+                  progress: 10,
+                },
+                plan3: {
+                  progress: 0,
+                },
+              },
+              streak: 5,
+            },
+          ];
         stubFind = sinon.stub(UserModel, 'find');
         stubFindOne = sinon.stub(UserModel, 'findOne');
         stubUpdate = sinon.stub(UserModel,'findByIdAndUpdate');
@@ -124,8 +142,27 @@ describe("Tests in user Repository", () => {
         const residenceId = 1234;
         stubFind.resolves(usersMock);
         const users = await UserRepository.findUsersByResidenceId(residenceId);
-        expect(users).to.be.an('array').and.to.have.lengthOf(1);
-        expect(users[0]).to.deep.equal(usersMock[0]);
+        expect(users).to.be.an('array').and.to.have.lengthOf(2);
+        expect(users[0]).to.deep.equal({
+            _id: '1',
+            username: 'user1',
+            apartment: 'Apartment 1',
+            userType: 'Type 1',
+            plan: {
+              progress: 100,
+            },
+            streak: 3,
+          });
+        expect(users[1]).to.deep.equal({
+            _id: '2',
+            username: 'user2',
+            apartment: 'Apartment 2',
+            userType: 'Type 2',
+            plan: {
+              progress: 25,
+            },
+            streak: 5,
+          });
     });
 
     it('Should throw an error when find users by residence id fails', async () => {
