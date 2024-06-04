@@ -1,6 +1,7 @@
 import UserRepository from "../repository/UserRepository.js";
 import AdminRepository from "../repository/AdminRepository.js";
 import bcrypt from "bcryptjs";
+import moment from "moment";
 import Response from "../utils/Response.js";
 
 export const loginClient = async (req, res) => {
@@ -17,6 +18,12 @@ export const loginClient = async (req, res) => {
 
     let client;
     if (userFound) {
+      const today = moment().format("YYYY-MM-DD");
+      const streak = userFound.streak;
+      if(streak && moment(streak).format("YYYY-MM-DD") === today){
+        streak += 1;
+      } 
+      await UserRepository.updateUserById(userFound._id, streak);
       client = userFound;
     } else if (adminFound) {
       client = adminFound;

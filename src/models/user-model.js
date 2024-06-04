@@ -26,21 +26,47 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    plan: {
-      planType: {
-        type: Number,
-        default: 0,
+    plans: {
+      plan1: {
+        _id: {
+          type: Number,
+          default: 1
+        },
+        progress: {
+          type: Number,
+          min: 0,
+          max: 100,
+          default: 0
+        }
       },
-      progress: {
-        type: Number,
-        min: 0,
-        max: 100,
-        default: 0,
+      plan2: {
+        _id: {
+          type: Number,
+          default: 2
+        },
+        progress: {
+          type: Number,
+          min: 0,
+          max: 100,
+          default: 0
+        }
       },
-      streak: {
-        type: Number,
-        default: 0,
-      },
+      plan3: {
+        _id: {
+          type: Number,
+          default: 3
+        },
+        progress: {
+          type: Number,
+          min: 0,
+          max: 100,
+          default: 0
+        }
+      }
+    },
+    streak: {
+      type: Number,
+      default: 0
     },
     userType: {
       type: String,

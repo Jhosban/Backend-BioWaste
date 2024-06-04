@@ -13,6 +13,7 @@ export const registerUser = async (req, res) => {
       password,
       confirmPassword,
       apartment,
+      plans,
       userType,
     } = req.body;
 
@@ -46,6 +47,7 @@ export const registerUser = async (req, res) => {
       email: result.email,
       phoneNumber: result.phoneNumber,
       apartment: result.apartment,
+      plans: result.plans,
       userType: result.userType,
     };
     Response.status = 201;

@@ -31,29 +31,27 @@ describe("Tests in user Repository", () => {
             password: "12345678",
             confirmPassword: "12345678",
             phoneNumber: "1234567890",
-            apartment: "402"
+            apartment: "402",
+            residence: 1234
         }
         usersMock = [{
             username: "usertest",
             apartment: "402",
-            plan: {
-                planType: 0,
-                progress: 0,
-                streak: 0,  
-            },
-            userType: "user",
-            residence: 1234
-        },
-        {
-            username: "usertest2",
-            apartment: "502",
-            plan: {
-                planType: 0,
-                progress: 0,
-                streak: 0,  
-            },
-            userType: "user",
-            residence: 1234
+            "plans": {
+                "plan1": {
+                  "_id": 1,
+                  "progress": 0
+                },
+                "plan2": {
+                  "_id": 2,
+                  "progress": 0
+                },
+                "plan3": {
+                  "_id": 3,
+                  "progress": 0
+                },
+              },
+            userType: "user"
         }]
         stubFind = sinon.stub(UserModel, 'find');
         stubFindOne = sinon.stub(UserModel, 'findOne');
@@ -123,13 +121,55 @@ describe("Tests in user Repository", () => {
 
     it('Should return users with the residence id', async () => {
         const residenceId = 1234;
-        stubFind.withArgs({ residence: residenceId }).resolves(usersMock);
+        stubFind.resolves(usersMock);
+        const users = await UserRepository.findUsersByResidenceId(residenceId);
+        expect(users).to.be.an('array').and.to.have.lengthOf(1);
+        expect(users[0]).to.deep.equal(usersMock[0]);
+    });
 
-        const result = await UserRepository.findUsersByResidenceId(residenceId);
-        console.log(result);
+    it('Should throw an error when find users by residence id fails', async () => {
+        stubFind.resolves(usersMock).rejects('Error finding users');
+        try {
+            await UserRepository.findUsersByResidenceId(1234);
+        } catch (err) {
+            expect(err.message).to.equal('Error finding users');
+        }
+    });
 
-        expect(result).to.equal(usersMock);
-        expect(stubFind.calledOnceWith({ residence: residenceId })).to.be.true;
+    it('Should delete the user from the residence', async () => {
+        const id = 123;
+        stubUpdate.resolves({});
+
+        await UserRepository.deleteUserById(id);
+
+        expect(stubUpdate.calledOnceWith(id, { residence: null })).to.be.true;
+    });
+
+    it('Should throw an error when delete user fails', async () => {
+        stubUpdate.resolves({}).rejects('Error deleting user');
+        try {
+            await UserRepository.deleteUserById(123);
+        } catch (err) {
+            expect(err.message).to.equal('Error deleting user');
+        }
+    });
+
+    it('Should asign the user to the residence', async () => { 
+        stubUpdate.resolves(userMock);
+
+        const result = await UserRepository.assingUserById(userMock._id, 4321);
+
+        expect(result).to.deep.equal(userMock);
+        expect(stubUpdate.calledOnceWith(userMock._id, { $set: { residence: 4321 } }, { new: true })).to.be.true;
+    });
+
+    it('Should throw an error when asign user fails', async () => {
+        stubUpdate.resolves(userMock).rejects('Error assigning user');
+        try {
+            await UserRepository.assingUserById(userMock._id, 4321);
+        } catch (err) {
+            expect(err.message).to.equal('Error assigning user');
+        }
     });
 
     it('Should update user', async () => {

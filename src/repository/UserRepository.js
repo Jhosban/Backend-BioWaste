@@ -26,12 +26,16 @@ export async function findUserByUsername(username) {
 
 export async function findUsersByResidenceId(residenceId) {
   try {
-    return await UserModel.find({ residence: residenceId })
-      .select("username apartment userType plan")
-      .lean();
+    const users = await UserModel.find({ residence: residenceId });
+    const filteredUsers = users.map((user) => ({
+      username: user.username,
+      apartment: user.apartment,
+      userType: user.userType,
+      plans: user.plans,
+    }));
+    return filteredUsers;
   } catch (err) {
-    // throw new Error("Error finding users");
-    console.log(err);
+    throw new Error("Error finding users");
   }
 }
 
