@@ -28,6 +28,7 @@ export async function findUsersByResidenceId(residenceId) {
   try {
     const users = await UserModel.find({ residence: residenceId });
     const filteredUsers = users.map((user) => ({
+      _id: user._id,
       username: user.username,
       apartment: user.apartment,
       userType: user.userType,
