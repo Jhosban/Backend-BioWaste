@@ -27,13 +27,22 @@ export async function findUserByUsername(username) {
 export async function findUsersByResidenceId(residenceId) {
   try {
     const users = await UserModel.find({ residence: residenceId });
-    const filteredUsers = users.map((user) => ({
-      _id: user._id,
-      username: user.username,
-      apartment: user.apartment,
-      userType: user.userType,
-      plans: user.plans,
-    }));
+    
+    const filteredUsers = users.map((user) => {
+
+      const maxProgressPlan = Object.values(user.plans).reduce((maxPlan, currentPlan) => {
+        return currentPlan.progress > maxPlan.progress ? currentPlan : maxPlan;
+      });
+
+      return {
+        _id: user._id,
+        username: user.username,
+        apartment: user.apartment,
+        userType: user.userType,
+        plan: maxProgressPlan,
+        streak: user.streak
+      }; 
+    });
     return filteredUsers;
   } catch (err) {
     throw new Error("Error finding users");
