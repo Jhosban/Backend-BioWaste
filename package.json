@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "test": "nyc --reporter=lcov mocha test --exit"
+    "test": "nyc --reporter=lcov mocha test --exit",
+    "start": "node swagger.js index.js",
+    "generate": "node swagger.js"
   },
   "keywords": [],
   "author": "Jhosban Barajas",
@@ -21,6 +23,9 @@
     "morgan": "^1.10.0",
     "nanoid": "^5.0.7",
     "resend": "^3.2.0",
+    "swagger-autogen": "^2.23.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {

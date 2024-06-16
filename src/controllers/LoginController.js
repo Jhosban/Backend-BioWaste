@@ -19,7 +19,7 @@ export const loginClient = async (req, res) => {
     let client;
     if (userFound) {
       const today = moment().format("YYYY-MM-DD");
-      const streak = userFound.streak;
+      let streak = userFound.streak;
       if(streak && moment(streak).format("YYYY-MM-DD") === today){
         streak += 1;
       } 
